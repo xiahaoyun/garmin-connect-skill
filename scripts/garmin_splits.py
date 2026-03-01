@@ -5,7 +5,12 @@
 import sys
 import json
 import os
+import argparse
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+# 自动加载当前目录及父目录可见的 .env
+load_dotenv()
 
 def setup_path():
     """设置 Python 路径"""
@@ -13,24 +18,22 @@ def setup_path():
     if user_site not in sys.path:
         sys.path.insert(0, user_site)
 
-def load_env():
-    """从 .env 加载账号"""
-    env_path = os.path.expanduser('~/.openclaw/workspace/.env')
-    if os.path.exists(env_path):
-        with open(env_path, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#') and '=' in line:
-                    key, value = line.split('=', 1)
-                    os.environ[key] = value
+def parse_args():
+    parser = argparse.ArgumentParser(description='获取 Garmin 活动分段数据')
+    parser.add_argument('--activity-id', help='指定活动 ID')
+    parser.add_argument('--date', help='按日期匹配活动 (YYYY-MM-DD)')
+    parser.add_argument('--domain', choices=['garmin.cn', 'garmin.com'], default=os.environ.get('GARMIN_DOMAIN', 'garmin.cn'),
+                        help='Garmin 域名: garmin.cn(中国区) 或 garmin.com(国际区)')
+    return parser.parse_args()
 
-def get_activity_splits(activity_id=None, date_str=None):
+
+def get_activity_splits(activity_id=None, date_str=None, domain='garmin.cn'):
     """获取活动分段数据"""
     setup_path()
     import garth
     
-    # 配置中国区
-    garth.configure(domain="garmin.cn")
+    # 配置域名（中国区/国际区）
+    garth.configure(domain=domain)
     
     # 登录
     email = os.environ.get('GARMIN_EMAIL')
@@ -142,7 +145,9 @@ def get_activity_splits(activity_id=None, date_str=None):
     return details
 
 if __name__ == "__main__":
-    load_env()
-    
-    # 获取今天的活动（2月7日）
-    result = get_activity_splits(date_str="2026-02-07")
+    args = parse_args()
+    result = get_activity_splits(
+        activity_id=args.activity_id,
+        date_str=args.date,
+        domain=args.domain,
+    )

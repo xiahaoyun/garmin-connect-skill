@@ -22,7 +22,7 @@ setup(
     description="Garmin Connect data retrieval skill for OpenClaw",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/haoyun/garmin-connect-skill",
+    url="https://github.com/xiahaoyun/garmin-connect-skill",
     packages=find_packages(where="scripts"),
     package_dir={"": "scripts"},
     classifiers=[

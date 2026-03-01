@@ -9,7 +9,12 @@ import sys
 import json
 import argparse
 import os
+from pathlib import Path
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+# 自动加载当前目录及父目录可见的 .env
+load_dotenv()
 
 def setup_path():
     """设置 Python 路径以找到 garth 库"""
@@ -18,22 +23,22 @@ def setup_path():
     if user_site not in sys.path:
         sys.path.insert(0, user_site)
 
-def load_env_file():
-    """从 workspace 根目录的 .env 文件加载环境变量"""
-    import os
-    env_path = os.path.expanduser('~/.openclaw/workspace/.env')
-    if os.path.exists(env_path):
-        with open(env_path, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#') and '=' in line:
-                    key, value = line.split('=', 1)
-                    os.environ[key] = value
+def resolve_env_file() -> str | None:
+    """解析可选的自定义 .env 文件路径（GARMIN_ENV_FILE）"""
+    env_file = os.environ.get("GARMIN_ENV_FILE")
+    if env_file:
+        p = Path(env_file).expanduser()
+        if p.exists():
+            return str(p)
+    return None
+
 
 def parse_args():
-    # 先加载 .env 文件
-    load_env_file()
-    
+    # 若设置 GARMIN_ENV_FILE，则额外加载指定 env 文件
+    custom_env = resolve_env_file()
+    if custom_env:
+        load_dotenv(custom_env, override=True)
+
     parser = argparse.ArgumentParser(description='获取 Garmin Connect 训练数据')
     parser.add_argument('email', nargs='?', default=os.environ.get('GARMIN_EMAIL'), 
                         help='Garmin 账号邮箱 (默认从 .env 读取)')
@@ -42,6 +47,8 @@ def parse_args():
     parser.add_argument('--limit', type=int, default=20, help='获取记录数量 (默认: 20)')
     parser.add_argument('--output', '-o', default='/tmp/garmin_activities.json', help='输出文件路径')
     parser.add_argument('--days', type=int, default=365, help='查询天数范围 (默认: 365)')
+    parser.add_argument('--domain', choices=['garmin.cn', 'garmin.com'], default=os.environ.get('GARMIN_DOMAIN', 'garmin.cn'),
+                        help='Garmin 域名: garmin.cn(中国区) 或 garmin.com(国际区)')
     return parser.parse_args()
 
 def format_pace(pace_min_km):
@@ -62,13 +69,13 @@ def format_duration(seconds):
         return f"{hours}:{mins:02d}"
     return f"{mins}:{int(seconds % 60):02d}"
 
-def fetch_activities(email, password, limit=20, days=365):
+def fetch_activities(email, password, limit=20, days=365, domain='garmin.cn'):
     """获取训练记录"""
     setup_path()
     import garth
     
-    # 配置中国区
-    garth.configure(domain="garmin.cn")
+    # 配置域名（中国区/国际区）
+    garth.configure(domain=domain)
     
     # 登录
     garth.login(email, password)
@@ -185,20 +192,22 @@ def main():
     if not args.email or not args.password:
         print("❌ 错误: 需要提供 Garmin 账号信息")
         print("   方式1: 设置环境变量 GARMIN_EMAIL 和 GARMIN_PASSWORD")
-        print("   方式2: 在 ~/.openclaw/workspace/.env 文件中添加:")
+        print("   方式2: 在项目 .env 文件中添加:")
         print("       GARMIN_EMAIL=your@email.com")
         print("       GARMIN_PASSWORD=yourpassword")
-        print("   方式3: 直接作为参数传入: python3 garmin_fetch.py <邮箱> <密码>")
+        print("       GARMIN_DOMAIN=garmin.cn  # 或 garmin.com")
+        print("   方式3: 直接作为参数传入: python3 garmin_fetch.py <邮箱> <密码> --domain garmin.cn")
         sys.exit(1)
     
-    print("🦴 正在连接 Garmin Connect 中国区...\n")
+    print(f"🦴 正在连接 Garmin Connect ({args.domain})...\n")
     
     try:
         user_info, activities = fetch_activities(
-            args.email, 
+            args.email,
             args.password,
             limit=args.limit,
-            days=args.days
+            days=args.days,
+            domain=args.domain
         )
         
         print(f"✅ 登录成功!")

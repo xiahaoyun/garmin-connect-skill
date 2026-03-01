@@ -48,7 +48,7 @@ python3 scripts/example.py
 
 ## 联系方式
 
-- GitHub Issues: [项目 Issues 页面](https://github.com/haoyun/garmin-connect-skill/issues)
+- GitHub Issues: [项目 Issues 页面](https://github.com/xiahaoyun/garmin-connect-skill/issues)
 
 ## 许可证
 

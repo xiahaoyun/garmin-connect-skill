@@ -5,6 +5,8 @@
 
 为 OpenClaw AI 助手提供完整的 Garmin Connect 数据获取能力，包括跑步训练分析、健康监测、身体电量、训练负荷等。
 
+> 项目说明：本项目主要由 **Haoyun** 进行需求定义与开发指挥，AI 负责实现与迭代。
+
 ## ✨ 功能特性
 
 ### 🏃 跑步训练数据
@@ -51,7 +53,7 @@ pip3 install garth python-dotenv requests --user --break-system-packages
 在 `.env` 文件中添加你的 Garmin 账号：
 
 ```bash
-# ~/.openclaw/workspace/.env
+# .env (推荐放在项目根目录；也可通过 GARMIN_ENV_FILE 指定路径)
 GARMIN_EMAIL=your_email@example.com
 GARMIN_PASSWORD=your_password
 ```

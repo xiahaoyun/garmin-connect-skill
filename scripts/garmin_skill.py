@@ -638,13 +638,9 @@ class GarminSkill:
             HRVData 列表
         """
         try:
-            # 生成日期列表
-            date_list = []
-            for i in range(days):
-                d = date.today() - timedelta(days=i)
-                date_list.append(d.isoformat())
-            
-            hrv_list = garth.HRVData.list(date_list)
+            # 使用 end 和 days 参数
+            end_date = date.today()
+            hrv_list = garth.HRVData.list(end=end_date, days=days)
             results = []
 
             for hrv in hrv_list:
@@ -681,8 +677,8 @@ class GarminSkill:
             day = date.fromisoformat(day)
 
         try:
-            # 使用 end 和 days 参数调用
-            status_list = garth.DailyTrainingStatus.list(end=day, days=1)
+            # 使用 end 和 period 参数调用
+            status_list = garth.DailyTrainingStatus.list(end=day, period=1)
             if not status_list:
                 return None
 
@@ -717,8 +713,8 @@ class GarminSkill:
             day = date.fromisoformat(day)
 
         try:
-            # 使用 end 和 days 参数调用
-            load_list = garth.DailyTrainingStatus.list(end=day, days=1)
+            # 使用 end 和 period 参数调用
+            load_list = garth.DailyTrainingStatus.list(end=day, period=1)
             if not load_list:
                 return None
 

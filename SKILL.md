@@ -3,13 +3,15 @@ name: garmin-connect
 description: 从 Garmin Connect 获取完整的健康与训练数据，包括跑步分析、身体电量、训练负荷、睡眠监测等。支持中国区账号。
 version: 1.0.0
 author: haoyun
-github: https://github.com/haoyun/garmin-connect-skill
+github: https://github.com/xiahaoyun/garmin-connect-skill
 license: MIT
 ---
 
 # Garmin Connect Skill for OpenClaw
 
 为 OpenClaw AI 助手提供完整的 Garmin Connect 数据获取能力。
+
+> 项目说明：本项目主要由 **Haoyun** 进行需求定义与开发指挥，AI 负责实现与迭代。
 
 ## ✨ 功能特性
 
@@ -62,7 +64,7 @@ pip3 install garth python-dotenv requests --user --break-system-packages
 在 OpenClaw workspace 的 `.env` 文件中添加：
 
 ```bash
-# ~/.openclaw/workspace/.env
+# .env (推荐放在项目根目录；也可通过 GARMIN_ENV_FILE 指定路径)
 GARMIN_EMAIL=your_email@example.com
 GARMIN_PASSWORD=your_password
 ```
@@ -206,7 +208,7 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 欢迎提交 Issue 和 Pull Request！
 
-GitHub: https://github.com/haoyun/garmin-connect-skill
+GitHub: https://github.com/xiahaoyun/garmin-connect-skill
 
 ## 🙏 致谢
 
