@@ -79,6 +79,14 @@ python3 scripts/garmin_skill.py
 
 如果显示你的最近跑步记录，说明配置成功。
 
+## ⚡ OpenClaw 最小接入模板
+
+- 模板文件：`templates/OPENCLAW_SETUP_TEMPLATE.md`
+- 适用场景：把本 skill 分享给其他 OpenClaw 用户时，快速引导其完成配置
+- 特别注意：必须让用户明确选择 `GARMIN_DOMAIN`：
+  - 中国区：`garmin.cn`
+  - 国际区：`garmin.com`
+
 ## 📖 使用示例
 
 ### 分析最近跑步

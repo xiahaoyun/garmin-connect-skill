@@ -82,6 +82,14 @@ status = skill.get_training_status()
 print(f"训练状态: {status.status}")
 ```
 
+## ⚡ OpenClaw 最小接入（One-Click 模板）
+
+可直接使用模板：
+
+- `templates/OPENCLAW_SETUP_TEMPLATE.md`
+
+模板已包含：依赖安装、`.env` 配置、CN/国际域名选择、连通性验证、可复制的引导文案。
+
 ## 📖 API 文档
 
 ### 跑步相关
