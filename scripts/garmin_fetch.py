@@ -16,12 +16,6 @@ from dotenv import load_dotenv
 # 自动加载当前目录及父目录可见的 .env
 load_dotenv()
 
-def setup_path():
-    """设置 Python 路径以找到 garth 库"""
-    import os
-    user_site = os.path.expanduser('~/.local/lib/python3.12/site-packages')
-    if user_site not in sys.path:
-        sys.path.insert(0, user_site)
 
 def resolve_env_file() -> str | None:
     """解析可选的自定义 .env 文件路径（GARMIN_ENV_FILE）"""
@@ -71,7 +65,6 @@ def format_duration(seconds):
 
 def fetch_activities(email, password, limit=20, days=365, domain='garmin.cn'):
     """获取训练记录"""
-    setup_path()
     import garth
     
     # 配置域名（中国区/国际区）

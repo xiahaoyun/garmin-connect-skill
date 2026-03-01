@@ -12,11 +12,6 @@ from dotenv import load_dotenv
 # 自动加载当前目录及父目录可见的 .env
 load_dotenv()
 
-def setup_path():
-    """设置 Python 路径"""
-    user_site = os.path.expanduser('~/.local/lib/python3.12/site-packages')
-    if user_site not in sys.path:
-        sys.path.insert(0, user_site)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='获取 Garmin 活动分段数据')
@@ -29,7 +24,6 @@ def parse_args():
 
 def get_activity_splits(activity_id=None, date_str=None, domain='garmin.cn'):
     """获取活动分段数据"""
-    setup_path()
     import garth
     
     # 配置域名（中国区/国际区）
