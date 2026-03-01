@@ -21,6 +21,10 @@ pip3 install -r requirements.txt --user --break-system-packages
 
 ## 3) 配置账号（关键）
 
+支持两种方式：
+
+### 方式 A：用户手动写 `.env`
+
 在 skill 根目录创建 `.env`：
 
 ```bash
@@ -33,6 +37,24 @@ GARMIN_PASSWORD=<your_password>
 # 国际区账号：garmin.com
 GARMIN_DOMAIN=garmin.cn
 ```
+
+### 方式 B：让 OpenClaw 代写 `.env`（推荐小白用户）
+
+让用户直接回复：
+
+```text
+GARMIN_EMAIL=xxx@example.com
+GARMIN_PASSWORD=xxxxxx
+GARMIN_DOMAIN=garmin.cn
+```
+
+然后由 OpenClaw：
+1. 先复述风险并确认：`是否写入本机 .env？(yes/no)`
+2. 用户回复 `yes` 后，调用文件写入工具创建/覆盖 `.env`
+3. 回显结果时对密码脱敏（例如 `GARMIN_PASSWORD=******`）
+4. 明确说明 `.env` 不会提交到 git（已在 `.gitignore` 中排除）
+
+> 安全建议：如在群聊环境，优先引导用户使用私聊发送账号密码。
 
 ## 4) 连通性测试
 

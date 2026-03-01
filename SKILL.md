@@ -86,6 +86,17 @@ python3 scripts/garmin_skill.py
 - 特别注意：必须让用户明确选择 `GARMIN_DOMAIN`：
   - 中国区：`garmin.cn`
   - 国际区：`garmin.com`
+- 配置支持两种模式：
+  1. 用户手动写 `.env`
+  2. 用户直接把凭证发给 OpenClaw，由 OpenClaw 在确认后代写 `.env`
+
+### 代写 `.env` 的安全要求
+
+当用户选择由 OpenClaw 代写时：
+1. 先确认写入行为（`yes/no`）
+2. 回显时隐藏密码（仅显示掩码）
+3. 提醒用户 `.env` 已被 `.gitignore` 排除，不会被提交
+4. 若在群聊环境，优先建议私聊发送凭证
 
 ## 📖 使用示例
 
